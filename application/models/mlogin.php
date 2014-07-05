@@ -16,11 +16,11 @@ class Mlogin extends MY_model
     }
     
     /*
-     * validateUser : 根据用户名和密码的组合判断是否存在该记录。
+     * validate_user : 根据用户名和密码的组合判断是否存在该记录。
      * param : $username -- 用户名 $password -- 密码
      * return : $record -- 记录 -1 -- 不存在
      */
-    function validateUser($username, $password)
+    function validate_user($username, $password)
     {
         $config= $this->select_DB("etc_privileges");
         $this->load->database($config);
@@ -43,11 +43,11 @@ class Mlogin extends MY_model
     }
     
     /*
-     * getAuthDB : 根据用户id返回该用户授权的数据库名
+     * get_auth_DB : 根据用户id返回该用户授权的数据库名
      * param : $userid -- 用户id
      * return : $authDB -- 用户被授权的数据库名（数组）
      */
-    function getAuthDB($userid)
+    function get_auth_DB($userid)
     {
         $config=parent::select_DB("etc_privileges");
         $this->load->database($config);
@@ -68,11 +68,11 @@ class Mlogin extends MY_model
     }
     
     /*
-     * insertLogMessage : 插入登录信息到登录日志表中
+     * insert_log_message : 插入登录信息到登录日志表中
      * param : $username -- 用户名 $logMessage -- 登录/注销信息 $ipAdddresss -- ip地址
      * return : true/false -- 操作是否成功
      */
-    function insertLogMessage($username, $logMessage, $ipAddress)
+    function insert_log_message($username, $logMessage, $ipAddress)
     {
         $config=parent::select_DB("etc_privileges");
         $this->load->database($config);

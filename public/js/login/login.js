@@ -71,7 +71,7 @@ $(document).ready(function(){
 });
 
 function get_captcha() {
-    $.get("clogin/getCaptcha", function(data){
+    $.get("clogin/get_captcha", function(data){
         $('#captcha-image').html(data);
     });
 };

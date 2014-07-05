@@ -15,7 +15,6 @@ class Clogin extends CI_Controller
         parent::__construct();
         
         $this->load->helper('captcha');
-        $this->load->library('session');
     }
     
     /*
@@ -32,20 +31,20 @@ class Clogin extends CI_Controller
         $data['title'] = "用户登录";
 
         $this->load->view('login/'.$page, $data);
-        $this->load->view('templates/login-footer');
+        $this->load->view('login/login_footer');
 
     }
     
     /*
-     * getCaptcha : 生成验证码函数
+     * get_captcha : 生成验证码函数
      * @param : null
      * @return : $cap['image'] - 生成的验证码图像代码
      */
-    public function getCaptcha()
+    public function get_captcha()
     {
         if($this->session->userdata('captcha') != "")
         {
-                $this->delCaptcha();
+                $this->del_captcha();
         }
 
         $vals = array(
@@ -65,11 +64,11 @@ class Clogin extends CI_Controller
     }
     
     /*
-     * delCaptcha : 删除验证码文件，用于登录成功以后，以便及时清理空间
+     * del_captcha : 删除验证码文件，用于登录成功以后，以便及时清理空间
      * param : null
      * return : null
      */
-    public function delCaptcha() 
+    public function del_captcha() 
     {
         $path = IMG_DIR.'/captcha/'.$this->session->userdata('captcha_url').'.jpg';
         $this->load->helper('file');
@@ -100,10 +99,10 @@ class Clogin extends CI_Controller
         }
 
         
-        $this->load->model("login/mlogin","mlogin");
+        $this->load->model("mlogin");
 
         //验证用户名密码
-        $record = $this->mlogin->validateUser($username, $password);
+        $record = $this->mlogin->validate_user($username, $password);
         if($record==-1)
         {
             echo PASSWORD_ERROR;
@@ -114,12 +113,12 @@ class Clogin extends CI_Controller
             echo LOGIN_SUCCESS;
             
             //删除验证码
-            $this->delCaptcha();
+            $this->del_captcha();
             $this->session->unset_userdata('captcha');
             $this->session->unset_userdata('captcha_url');
             
             //设置session数据
-            $authDB =  $this->mlogin->getAuthDB($record['userid']);
+            $authDB =  $this->mlogin->get_auth_DB($record['userid']);
             $userdata = array(
                'username'  => $username,
                'authDB'    => $authDB,
@@ -129,7 +128,7 @@ class Clogin extends CI_Controller
             $this->session->set_userdata($userdata);
             
             //插入日志文件
-            $this->mlogin->insertLogMessage($username, "login", $this->input->ip_address());
+            $this->mlogin->insert_log_message($username, "login", $this->input->ip_address());
         }
 
     }
